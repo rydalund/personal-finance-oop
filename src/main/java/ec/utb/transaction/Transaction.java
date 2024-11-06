@@ -1,21 +1,18 @@
 package ec.utb.transaction;
 import ec.utb.Application;
+import ec.utb.Bank;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
 public abstract class Transaction {
-
     private UUID transactionId;
-    private double entry;
     private String transactionName;
-    private double balance;
-    private LocalDate transactionDate;
+    private double entry;
 
-    public Transaction (double entry, String transactionName, Application application) {
+    public Transaction(double entry, String transactionName){
         this.transactionId = UUID.randomUUID();
-        this.entry = entry;
         this.transactionName = transactionName;
-        this.transactionDate = LocalDate.now();
+        this.entry = entry;
     }
-    protected abstract void updateBankBalance (String[] commandArgs);
 }
