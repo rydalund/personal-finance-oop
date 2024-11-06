@@ -6,9 +6,6 @@ public class BankMenu extends Menu {
 
     public BankMenu(Bank bank) {
         super(bank);
-        registerCommand(new CreateTaskCommand(bank));
-        registerCommand(new RemoveTaskCommand(bank));
-        registerCommand(new CompleteTaskCommand(bank));
     }
 
     @Override

@@ -1,25 +1,22 @@
 package ec.utb;
 
-import java.io.Serializable;
 
-public class Bank implements Serializable {
-    double balance;
+public class Bank {
+    private double balance;
 
-    public Bank () {
-        balance = 0.00;
+    public Bank(double initialBalance) {
+        this.balance = initialBalance;
     }
 
-    public void setBalance (double balance){
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public double getBalance (){
-        return balance;
+    public void adjustBalance(double amount) {
+        this.balance += amount;
     }
-   /* public static void main(String [] args) {
-        Bank bank = new Bank();
-        TransactionManager transactionManager = new TransactionManager();
-        BankFileHandler.initializeBankBalanceFromFile(bank);
-        transactionManager.initializeTransactionPrompt(bank);
-    }*/
 }
