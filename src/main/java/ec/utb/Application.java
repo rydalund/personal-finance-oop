@@ -1,17 +1,25 @@
 package ec.utb;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Application {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import ec.utb.menu.BankMenu;
+import ec.utb.transaction.DepositTransaction;
+import ec.utb.transaction.Transaction;
+import ec.utb.transaction.TransactionFileSaver;
+import ec.utb.transaction.TransactionSaver;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+import java.util.List;
+
+
+public class Application {
+
+    public static void main(String[] args) {
+        // Skapa en instans av Bank
+        Bank bank = new Bank();
+
+        // Skapa en instans av TransactionSaver (den som ansvarar för att spara och ta bort transaktioner)
+        TransactionSaver transactionSaver = new TransactionFileSaver(); // Eller använd någon annan implementering av TransactionSaver
+
+        // Skapa och visa BankMenu, som hanterar användarens kommandon
+        BankMenu bankMenu = new BankMenu(bank, transactionSaver);
+        bankMenu.show();
     }
 }

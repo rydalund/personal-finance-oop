@@ -10,15 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Menu implements CommandManager {
-
-    private List<Command> commandList = new ArrayList<>();
+    private final List<Command> commandList = new ArrayList<>();
     protected Bank bank;
 
     public Menu(Bank bank) {
         this.bank = bank;
     }
-
-    public abstract void show();
 
     @Override
     public void registerCommand(Command command) {
@@ -27,9 +24,9 @@ public abstract class Menu implements CommandManager {
 
     @Override
     public void tryExecuteCommand(String input) {
-        if (input.isBlank())
+        if (input.isBlank()) {
             throw new IllegalArgumentException("No input!");
-
+        }
 
         String[] splitString = input.trim().toUpperCase().split(" ");
         String commandName = splitString[0];
@@ -40,5 +37,9 @@ public abstract class Menu implements CommandManager {
                 return;
             }
         }
+
+        System.out.println("Command not found!");
     }
+
+    public abstract void show();
 }

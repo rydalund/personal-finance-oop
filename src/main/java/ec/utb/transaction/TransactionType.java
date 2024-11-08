@@ -1,17 +1,17 @@
 package ec.utb.transaction;
 
 public enum TransactionType {
-    DEPOSIT('+'),
-    WITHDRAW('-');
+    DEPOSIT("Deposit"),
+    WITHDRAW("Withdraw");
 
-    private final char asChar;
+    private final String description;
 
-    TransactionType(char asChar) {
-        this.asChar = asChar;
+    TransactionType(String description) {
+        this.description = description;
     }
 
-    public char asChar() {
-        return asChar;
+    public String getDescription() {
+        return description;
     }
 }
 

@@ -1,45 +1,43 @@
 package ec.utb.command;
 import ec.utb.Bank;
 import ec.utb.transaction.TransactionType;
-import ec.utb.utility.TransactionSaver;
-
-import java.util.Scanner;
+import ec.utb.transaction.TransactionSaver;
 
 public abstract class Command {
-    protected Scanner scanner = new Scanner(System.in);
-    private String name;
+    private String name; //ska kanske göra om
     protected Bank bank;
+    protected TransactionSaver transactionSaver;
 
-    public Command(String name, Bank bank) {
+    public Command(String name, Bank bank, TransactionSaver transactionSaver) {
         this.name = name;
         this.bank = bank;
+        this.transactionSaver = transactionSaver;
     }
-
-    public abstract void executeCommand(String[] splitString);
 
     public String getName() {
         return name;
     }
 
-    protected static double testInputLength(String[] splitString) {
-        if (splitString.length == 2) {
-            String inputDoubleString = splitString[1];
-            try {
-                return Double.parseDouble(inputDoubleString);
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid number format: " + inputDoubleString);
-                return 0.00;
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid input length");
+    public abstract void executeCommand(String[] splitString);
+
+
+    protected double getAmountFromInput(String[] splitString) {
+        if (splitString.length < 2) {
+            throw new IllegalArgumentException("Amount is required.");
+        }
+
+        try {
+            return Double.parseDouble(splitString[1]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid amount.");
         }
     }
 
     protected String getTransactionNameOrDefault(String[] splitString, TransactionType transactionType) {
         if (splitString.length > 1 && !splitString[1].isEmpty()) {
-            return splitString[1];
+            return splitString[1]; // Använd namn från input om det finns
         } else {
-            return transactionType.name();
+            return transactionType.getDescription(); // Annars använd default namn från TransactionType
         }
     }
 }

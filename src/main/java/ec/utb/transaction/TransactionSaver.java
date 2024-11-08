@@ -1,10 +1,7 @@
-package ec.utb.utility;
+package ec.utb.transaction;
 import java.util.UUID;
-import ec.utb.transaction.Transaction;
 
 public interface TransactionSaver {
-
     void saveTransaction(Transaction transaction);
-
     void deleteTransaction(UUID transactionId);
 }
