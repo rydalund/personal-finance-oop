@@ -1,5 +1,5 @@
 package ec.utb.menu;
-import ec.utb.transaction.Bank;
+import ec.utb.Bank;
 import ec.utb.command.*;
 import ec.utb.transaction.TransactionManager;
 import java.util.ArrayList;
@@ -8,9 +8,11 @@ import java.util.Scanner;
 
 public class BankMenu implements CommandManager {
 
-    private Bank bank;
-    private TransactionManager transactionManager;
-    private List<Command> commandList;
+    private final Bank bank;
+    private final TransactionManager transactionManager;
+    private final List<Command> commandList;
+
+    private boolean running;
 
     public BankMenu(Bank bank, TransactionManager transactionManager) {
         this.bank = bank;
@@ -26,18 +28,15 @@ public class BankMenu implements CommandManager {
 
     @Override
     public void tryExecuteCommand(String input) {
-        String[] inputParts = input.split(" ", 2);
-        String commandName = inputParts[0].toUpperCase();
-        String[] args = (inputParts.length > 1) ? inputParts[1].split(" ") : new String[0];
+        String commandName = input.trim().toUpperCase();
 
         for (Command command : commandList) {
             if (command.getName().equalsIgnoreCase(commandName)) {
-                command.executeCommand(args);
+                command.executeCommand();
                 return;
             }
         }
-
-        System.out.println("Unknown command: " + commandName);
+        System.out.println("Oops " + commandName + " is an unknown command or too many arguments - please just type <command>!");
     }
 
     @Override
@@ -48,7 +47,9 @@ public class BankMenu implements CommandManager {
     public void printAvailableCommands() {
         System.out.println("List of available commands:");
         for (Command command : commandList) {
-            System.out.println(command.getName() + " - " + command.getDescription());
+            if (!command.getName().equalsIgnoreCase("help")) {
+                System.out.println("# " + command.getName() + " - " + command.getDescription());
+            }
         }
     }
 
@@ -56,28 +57,26 @@ public class BankMenu implements CommandManager {
         registerCommand(new DepositCommand(bank, transactionManager));
         registerCommand(new WithdrawCommand(bank, transactionManager));
         registerCommand(new ShowCommand(bank, transactionManager));
-        registerCommand(new HelpCommand(this));
+        registerCommand(new HelpCommand(this)); //registreras här men skrivs inte ut
         registerCommand(new BalanceCommand(bank));
-        registerCommand(new ExitCommand(bank));
+        registerCommand(new DeleteCommand(bank, transactionManager));
+        registerCommand(new ExitCommand(this));
     }
 
     public void startMenu() {
+        running = true;
         Scanner scanner = new Scanner(System.in);
-        boolean running = true;
+        System.out.println("\n------ Bank Menu ------");
+        printAvailableCommands();
 
         while (running) {
-            System.out.println("\n------ Bank Menu ------");
-            printAvailableCommands();
-            System.out.print("Enter your command: ");
+            System.out.print("Enter your <command> (or type 'help' to show commands): ");
             String input = scanner.nextLine().trim();
-
-            if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("end")) {
-                System.out.println("Exiting application...");
-                running = false;
-            } else {
-                tryExecuteCommand(input);
-            }
+            tryExecuteCommand(input);  // Kör kommandot
         }
         scanner.close();
+    }
+    public void stopMenu() {
+        running = false;
     }
 }

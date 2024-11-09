@@ -1,5 +1,5 @@
 package ec.utb.command;
-import ec.utb.transaction.Bank;
+import ec.utb.Bank;
 
 public abstract class Command {
 
@@ -25,5 +25,5 @@ public abstract class Command {
         return bank;
     }
 
-    public abstract void executeCommand(String[] splitString);
+    public abstract void executeCommand();
 }

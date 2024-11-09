@@ -1,5 +1,5 @@
 package ec.utb.menu;
-import ec.utb.transaction.Bank;
+import ec.utb.Bank;
 import ec.utb.command.Command;
 import ec.utb.command.CommandManager;
 import java.util.ArrayList;
@@ -24,15 +24,15 @@ public abstract class Menu implements CommandManager {
             throw new IllegalArgumentException("No input!");
         }
 
-        String[] splitString = input.trim().toUpperCase().split(" ");
-        String commandName = splitString[0];
+        String commandName = input.trim().toUpperCase();
 
         for (Command command : commandList) {
             if (command.getName().equalsIgnoreCase(commandName)) {
-                command.executeCommand(splitString);
+                command.executeCommand();  // Anropa executeCommand utan argument, då de hanteras direkt i kommandot
                 return;
             }
         }
+
         System.out.println("Command not found!");
     }
 

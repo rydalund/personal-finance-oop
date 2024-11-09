@@ -1,4 +1,5 @@
 package ec.utb.command;
+import ec.utb.Bank;
 import ec.utb.transaction.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -6,7 +7,7 @@ import java.util.Scanner;
 
 public class ShowCommand extends Command {
 
-    private TransactionManager transactionManager;
+    private final TransactionManager transactionManager;
 
     public ShowCommand(Bank bank, TransactionManager transactionManager) {
         super("SHOW", "Displays transactions based on filters", bank);
@@ -14,7 +15,7 @@ public class ShowCommand extends Command {
     }
 
     @Override
-    public void executeCommand(String[] splitString) {
+    public void executeCommand() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Filter transactions by (D)eposit, (W)ithdraw, or (B)oth? (default is both)");
         String typeInput = scanner.nextLine().trim().toUpperCase();

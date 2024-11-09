@@ -1,4 +1,9 @@
-package ec.utb.transaction;
+package ec.utb;
+import ec.utb.transaction.DepositTransaction;
+import ec.utb.transaction.Transaction;
+import ec.utb.transaction.TransactionManager;
+import ec.utb.transaction.WithdrawTransaction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

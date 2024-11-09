@@ -1,5 +1,5 @@
 package ec.utb.command;
-import ec.utb.transaction.Bank;
+import ec.utb.Bank;
 
 public class BalanceCommand extends Command {
 
@@ -8,7 +8,7 @@ public class BalanceCommand extends Command {
     }
 
     @Override
-    public void executeCommand(String[] splitString) {
+    public void executeCommand() {
         double balance = getBank().getBalance();
         System.out.println("Current Balance: " + balance);
     }
