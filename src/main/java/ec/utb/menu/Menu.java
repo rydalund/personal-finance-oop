@@ -35,6 +35,4 @@ public abstract class Menu implements CommandManager {
 
         System.out.println("Command not found!");
     }
-
-    public abstract void show();
 }
