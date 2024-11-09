@@ -1,11 +1,7 @@
 package ec.utb.menu;
-
-import ec.utb.Bank;
+import ec.utb.transaction.Bank;
 import ec.utb.command.Command;
 import ec.utb.command.CommandManager;
-import ec.utb.transaction.Transaction;
-import ec.utb.transaction.TransactionManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +33,6 @@ public abstract class Menu implements CommandManager {
                 return;
             }
         }
-
         System.out.println("Command not found!");
     }
 

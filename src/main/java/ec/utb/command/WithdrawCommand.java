@@ -1,28 +1,45 @@
 package ec.utb.command;
-
-import ec.utb.Bank;
-import ec.utb.transaction.Transaction;
-import ec.utb.transaction.TransactionType;
-import ec.utb.transaction.WithdrawTransaction;
-import ec.utb.transaction.TransactionSaver;
+import ec.utb.transaction.*;
+import java.util.Scanner;
+import java.util.UUID;
 
 public class WithdrawCommand extends Command {
 
-    public WithdrawCommand(Bank bank, TransactionSaver transactionSaver) {
-        super("WITHDRAW", bank, transactionSaver);
+    private TransactionManager transactionManager;
+
+    public WithdrawCommand(Bank bank, TransactionManager transactionManager) {
+        super("WITHDRAW", "Withdraw an amount from the account", bank);
+        this.transactionManager = transactionManager;
     }
 
     @Override
     public void executeCommand(String[] splitString) {
-        double amount = getAmountFromInput(splitString);
-        if (amount > 0 && amount <= bank.getBalance()) {
-            String transactionName = getTransactionNameOrDefault(splitString, TransactionType.WITHDRAW);
-            Transaction transaction = new WithdrawTransaction(amount, transactionName);
-            bank.addTransaction(transaction);
-            transactionSaver.saveTransaction(transaction);
-            System.out.println("Withdrawal of " + amount + " processed.");
-        } else {
-            System.out.println("Invalid amount or insufficient funds.");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the amount to withdraw: ");
+        double amount = scanner.nextDouble();
+
+        if (amount <= 0) {
+            System.out.println("Amount must be greater than zero.");
+            return;
         }
+
+        double balance = bank.getBalance();
+        if (balance < amount) {
+            System.out.println("Insufficient funds. Your balance is: " + balance);
+            return;
+        }
+
+        System.out.println("Enter a name or description for the transaction: ");
+        scanner.nextLine();
+        String transactionName = scanner.nextLine().trim();
+
+        WithdrawTransaction withdrawTransaction = new WithdrawTransaction(
+                UUID.randomUUID(), amount, transactionName, java.time.LocalDate.now()
+        );
+
+        bank.addTransaction(withdrawTransaction);
+
+        System.out.println("Withdrawal successful. Amount: " + amount + " Description: " + transactionName);
     }
 }

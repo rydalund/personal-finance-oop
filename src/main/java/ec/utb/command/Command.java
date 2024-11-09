@@ -1,43 +1,29 @@
 package ec.utb.command;
-import ec.utb.Bank;
-import ec.utb.transaction.TransactionType;
-import ec.utb.transaction.TransactionSaver;
+import ec.utb.transaction.Bank;
 
 public abstract class Command {
-    private String name; //ska kanske göra om
-    protected Bank bank;
-    protected TransactionSaver transactionSaver;
 
-    public Command(String name, Bank bank, TransactionSaver transactionSaver) {
+    private final String name;
+    private final String description;
+    protected Bank bank;
+
+    public Command(String name, String description, Bank bank) {
         this.name = name;
+        this.description = description;
         this.bank = bank;
-        this.transactionSaver = transactionSaver;
     }
 
     public String getName() {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
     public abstract void executeCommand(String[] splitString);
-
-
-    protected double getAmountFromInput(String[] splitString) {
-        if (splitString.length < 2) {
-            throw new IllegalArgumentException("Amount is required.");
-        }
-
-        try {
-            return Double.parseDouble(splitString[1]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid amount.");
-        }
-    }
-
-    protected String getTransactionNameOrDefault(String[] splitString, TransactionType transactionType) {
-        if (splitString.length > 1 && !splitString[1].isEmpty()) {
-            return splitString[1]; // Använd namn från input om det finns
-        } else {
-            return transactionType.getDescription(); // Annars använd default namn från TransactionType
-        }
-    }
 }

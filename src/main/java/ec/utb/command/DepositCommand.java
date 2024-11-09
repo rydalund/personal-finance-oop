@@ -1,28 +1,27 @@
 package ec.utb.command;
-
-import ec.utb.Bank;
-import ec.utb.transaction.DepositTransaction;
-import ec.utb.transaction.Transaction;
-import ec.utb.transaction.TransactionType;
-import ec.utb.transaction.TransactionSaver;
+import ec.utb.transaction.*;
+import java.util.Scanner;
 
 public class DepositCommand extends Command {
 
-    public DepositCommand(Bank bank, TransactionSaver transactionSaver) {
-        super("DEPOSIT", bank, transactionSaver);
+    private TransactionManager transactionManager;
+
+    public DepositCommand(Bank bank, TransactionManager transactionManager) {
+        super("DEPOSIT", "Deposit money into the account", bank);
+        this.transactionManager = transactionManager;
     }
 
     @Override
-    public void executeCommand(String[] splitString) {
-        double amount = getAmountFromInput(splitString);
-        if (amount > 0) {
-            String transactionName = getTransactionNameOrDefault(splitString, TransactionType.DEPOSIT);
-            Transaction transaction = new DepositTransaction(amount, transactionName);
-            bank.addTransaction(transaction);
-            transactionSaver.saveTransaction(transaction);
-            System.out.println("Deposit of " + amount + " processed.");
-        } else {
-            System.out.println("Invalid amount for deposit.");
-        }
+    public void executeCommand(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter deposit amount:");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.println("Enter transaction name:");
+        String transactionName = scanner.nextLine();
+
+        DepositTransaction deposit = new DepositTransaction(amount, transactionName);
+
+        bank.addTransaction(deposit);
     }
 }
