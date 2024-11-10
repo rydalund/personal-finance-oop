@@ -3,7 +3,6 @@ import ec.utb.menu.BankMenu;
 import ec.utb.menu.Menu;
 import ec.utb.transaction.*;
 
-
 public class Application {
 
     public static void main(String[] args) {
