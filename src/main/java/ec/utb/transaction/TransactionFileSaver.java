@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class TransactionFileSaver implements TransactionManager {
-    private String filePath;
+    private final String filePath;
 
     public TransactionFileSaver(String filePath) {
         this.filePath = filePath;
@@ -34,9 +34,7 @@ public class TransactionFileSaver implements TransactionManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 Transaction transaction = Transaction.fromString(line);
-                if (transaction != null) {
-                    transactions.add(transaction);
-                }
+                transactions.add(transaction);
             }
         } catch (IOException e) {
             System.err.println("Error reading transactions from file " + filePath + ": " + e.getMessage());

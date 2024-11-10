@@ -27,8 +27,6 @@ public class Bank {
             if (transactions.stream().noneMatch(t -> t.getTransactionId().equals(transaction.getTransactionId()))) {
                 transactions.add(transaction);
                 updateBalance(transaction);
-            } else {
-                System.out.println("Duplicate transaction found with UUID: " + transaction.getTransactionId());
             }
         }
     }
@@ -40,18 +38,14 @@ public class Bank {
             updateBalance(transaction);
             System.out.println("Updated balance after transaction: " + balance);
             transactionManager.saveTransaction(transaction);
-        } else {
-            System.out.println("Transaction with ID " + transaction.getTransactionId() + " already exists.");
         }
     }
 
     public void updateBalance(Transaction transaction) {
         if (transaction instanceof DepositTransaction) {
             balance += transaction.getAmount();
-            System.out.println("Balance updated after deposit: " + balance);
         } else if (transaction instanceof WithdrawTransaction) {
             balance -= transaction.getAmount();
-            System.out.println("Balance updated after withdraw: " + balance);
         }
     }
 

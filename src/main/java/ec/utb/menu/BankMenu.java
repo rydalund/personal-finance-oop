@@ -18,12 +18,12 @@ public class BankMenu extends Menu {
 
     @Override
     protected void registerCommands() {
-        registerCommand(new DepositCommand(bank, transactionManager));
-        registerCommand(new WithdrawCommand(bank, transactionManager));
+        registerCommand(new DepositCommand(bank));
+        registerCommand(new WithdrawCommand(bank));
         registerCommand(new ShowCommand(bank, transactionManager));
         registerCommand(new HelpCommand(this));
         registerCommand(new BalanceCommand(bank));
-        registerCommand(new DeleteCommand(bank, transactionManager));
+        registerCommand(new DeleteCommand(bank));
         registerCommand(new ExitCommand(this));
     }
 

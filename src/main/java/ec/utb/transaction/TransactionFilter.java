@@ -1,43 +1,37 @@
 package ec.utb.transaction;
-import java.util.ArrayList;
+import ec.utb.NoTransactionsFoundException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class TransactionFilter {
 
-    public static List<Transaction> getTransactions(List<Transaction> transactions, Integer year, Integer month, Integer day, TransactionType type) {
-        List<Transaction> filteredTransactions = new ArrayList<>();
-
-        for (Transaction transaction : transactions) {
-            boolean matches = true;
-
-            if (type != null) {
-                if (type == TransactionType.DEPOSIT && !(transaction instanceof DepositTransaction)) {
-                    matches = false;
-                }
-                if (type == TransactionType.WITHDRAW && !(transaction instanceof WithdrawTransaction)) {
-                    matches = false;
-                }
-                if (type == TransactionType.BOTH && !(transaction instanceof DepositTransaction) && !(transaction instanceof WithdrawTransaction)) {
-                    matches = false;
-                }
-            }
-
-            if (year != null && transaction.getTransactionDate().getYear() != year) {
-                matches = false;
-            }
-
-            if (month != null && transaction.getTransactionDate().getMonthValue() != month) {
-                matches = false;
-            }
-
-            if (day != null && transaction.getTransactionDate().getDayOfMonth() != day) {
-                matches = false;
-            }
-
-            if (matches) {
-                filteredTransactions.add(transaction);
-            }
+    public static List<Transaction> getTransactions(List<Transaction> transactions, Integer year, Integer month, Integer day, TransactionType type) throws NoTransactionsFoundException {
+        List<Transaction> filteredTransactions = transactions.stream()
+                .filter(transaction -> matchesType(transaction, type))
+                .filter(transaction -> matchesDate(transaction, year, month, day))
+                .collect(Collectors.toList());
+        if (filteredTransactions.isEmpty()) {
+            throw new NoTransactionsFoundException("No transactions found matching filter.");
         }
         return filteredTransactions;
+    }
+
+    private static boolean matchesType(Transaction transaction, TransactionType type) {
+        if (type == null) return true;
+        return switch (type) {
+            case DEPOSIT -> transaction instanceof DepositTransaction;
+            case WITHDRAW -> transaction instanceof WithdrawTransaction;
+            case BOTH -> transaction instanceof DepositTransaction || transaction instanceof WithdrawTransaction;
+            default -> false;
+        };
+    }
+
+    private static boolean matchesDate(Transaction transaction, Integer year, Integer month, Integer day) {
+        LocalDate date = transaction.getTransactionDate();
+        if (year != null && date.getYear() != year) return false;
+        if (month != null && date.getMonthValue() != month) return false;
+        return day == null || date.getDayOfMonth() == day;
     }
 }

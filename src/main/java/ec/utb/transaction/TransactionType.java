@@ -12,18 +12,6 @@ public enum TransactionType {
     }
 
     public String getDescription() {
-        return description;
+        return description.toLowerCase() + " without label";
     }
-
-    /*
-    public static TransactionType fromString(String type) {
-        if (type != null) {
-            for (TransactionType transactionType : TransactionType.values()) {
-                if (type.equalsIgnoreCase(transactionType.name()) || type.equalsIgnoreCase(transactionType.getDescription())) {
-                    return transactionType;
-                }
-            }
-        }
-        return null;
-    }*/
 }

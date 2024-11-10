@@ -7,7 +7,7 @@ public class WithdrawCommand extends Command {
 
     private final Bank bank;
 
-    public WithdrawCommand(Bank bank, TransactionManager transactionManager) {
+    public WithdrawCommand(Bank bank) {
         super("WITHDRAW", "Withdraw from the account", bank);
         this.bank = bank;
     }
@@ -23,11 +23,10 @@ public class WithdrawCommand extends Command {
                 System.out.println("Amount must be positive.");
                 return;
             }
-            System.out.print("Enter transaction name: ");
+            System.out.print("Enter (optional) withdraw transaction name: ");
             String transactionName = scanner.nextLine().trim();
             Transaction withdraw = new WithdrawTransaction(amount, transactionName);
             bank.addTransaction(withdraw);
-            System.out.println("Withdrew " + amount + " from the account with transaction name: " + transactionName);
         } catch (NumberFormatException e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }

@@ -7,7 +7,7 @@ public class DepositCommand extends Command {
 
     private final Bank bank;
 
-    public DepositCommand(Bank bank, TransactionManager transactionManager) {
+    public DepositCommand(Bank bank) {
         super("DEPOSIT", "Deposit into the account", bank);
         this.bank = bank;
     }
@@ -23,11 +23,10 @@ public class DepositCommand extends Command {
                 System.out.println("Amount must be positive.");
                 return;
             }
-            System.out.print("Enter transaction name: ");
+            System.out.print("Enter (optional) deposit transaction name: ");
             String transactionName = scanner.nextLine().trim();
             Transaction deposit = new DepositTransaction(amount, transactionName);
             bank.addTransaction(deposit);
-            System.out.println("Deposited " + amount + " into the account with transaction name: " + transactionName);
         } catch (NumberFormatException e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }
