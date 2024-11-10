@@ -1,5 +1,6 @@
 package ec.utb;
 import ec.utb.menu.BankMenu;
+import ec.utb.menu.Menu;
 import ec.utb.transaction.*;
 
 
@@ -9,7 +10,7 @@ public class Application {
         String filePath = "transactions.csv";
         TransactionFileSaver transactionFileSaver = new TransactionFileSaver(filePath);
         Bank bank = new Bank(transactionFileSaver);
-        BankMenu bankMenu = new BankMenu(bank, transactionFileSaver);
+        Menu bankMenu = new BankMenu(bank, transactionFileSaver);
         bankMenu.startMenu();
     }
 }
