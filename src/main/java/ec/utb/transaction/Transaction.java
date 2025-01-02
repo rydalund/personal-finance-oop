@@ -62,4 +62,12 @@ public abstract class Transaction {
         }
         throw new IllegalArgumentException("Invalid string format for transaction");
     }
+
+    public String getTransactionName() {
+        return transactionName;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
 }

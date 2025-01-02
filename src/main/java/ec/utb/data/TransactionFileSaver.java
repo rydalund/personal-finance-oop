@@ -1,4 +1,7 @@
-package ec.utb.transaction;
+package ec.utb.data;
+import ec.utb.transaction.Transaction;
+import ec.utb.transaction.TransactionManager;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
