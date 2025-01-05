@@ -2,7 +2,6 @@ package ec.utb.command;
 import ec.utb.Bank;
 
 public abstract class Command {
-
     private final String name;
     private final String description;
     protected Bank bank;

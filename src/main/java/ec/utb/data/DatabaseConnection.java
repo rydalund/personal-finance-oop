@@ -29,31 +29,27 @@ public class DatabaseConnection {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + DB_NAME, DB_USER, DB_PASSWORD);
     }
 
-    public static void createDatabaseIfNotExists() {
+    public static void createDatabaseIfNotExists() throws SQLException {
         String checkDbSql = "SELECT 1 FROM pg_database WHERE datname = ?";
         String createDbSql = "CREATE DATABASE " + DB_NAME;
-
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement checkStatement = connection.prepareStatement(checkDbSql)) {
-
             checkStatement.setString(1, DB_NAME);
             ResultSet resultSet = checkStatement.executeQuery();
-
             if (!resultSet.next()) {
                 try (Statement createStatement = connection.createStatement()) {
                     createStatement.executeUpdate(createDbSql);
                     System.out.println("Database '" + DB_NAME + "' created successfully.");
                 }
-            } else {
-                System.out.println("Database '" + DB_NAME + "' already exists.");
             }
 
         } catch (SQLException e) {
             System.err.println("Error checking or creating database: " + e.getMessage());
+            throw e;
         }
     }
 
-    public static void createTablesIfNotExists() {
+    public static void createTablesIfNotExists() throws SQLException {
         String createUsersTableSQL = "CREATE TABLE IF NOT EXISTS users ("
                 + "user_id UUID PRIMARY KEY, "
                 + "username VARCHAR(50) UNIQUE NOT NULL, "
@@ -68,21 +64,24 @@ public class DatabaseConnection {
                 + "description VARCHAR(255), "
                 + "date DATE, "
                 + "type VARCHAR(50), "
-                //+ "user_id UUID, "
-                //+ "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+                + "user_id UUID, "
+                + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
                 + ");";
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()) {
-
             statement.executeUpdate(createUsersTableSQL);
             System.out.println("Users table created or already exists.");
-
             statement.executeUpdate(createTransactionsTableSQL);
             System.out.println("Transactions table created or already exists.");
-
         } catch (SQLException e) {
             System.err.println("Error creating tables: " + e.getMessage());
+            throw e;
         }
+    }
+
+    public static void initializeDatabase() throws SQLException {
+        createDatabaseIfNotExists();
+        createTablesIfNotExists();
     }
 }

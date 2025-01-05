@@ -4,12 +4,12 @@ import java.util.UUID;
 
 public class WithdrawTransaction extends Transaction {
 
-    public WithdrawTransaction(UUID transactionId, double amount, String transactionName, LocalDate transactionDate) {
-        super(transactionId, amount, transactionName, transactionDate, TransactionType.WITHDRAW);
+    public WithdrawTransaction(UUID transactionId, double amount, String transactionName, LocalDate transactionDate, UUID userId) {
+        super(transactionId, amount, transactionName, transactionDate, TransactionType.WITHDRAW, userId);
     }
 
-    public WithdrawTransaction(double amount, String transactionName) {
-        super(null, amount, getDefaultTransactionName(transactionName), null, TransactionType.WITHDRAW);
+    public WithdrawTransaction(double amount, String transactionName, UUID userId) {
+        super(null, amount, getDefaultTransactionName(transactionName), null, TransactionType.WITHDRAW, userId);
     }
 
     private static String getDefaultTransactionName(String transactionName) {

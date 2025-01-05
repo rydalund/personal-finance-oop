@@ -1,6 +1,9 @@
 package ec.utb.command;
+
 import ec.utb.Bank;
-import ec.utb.transaction.*;
+import ec.utb.transaction.DepositTransaction;
+import ec.utb.transaction.Transaction;
+import ec.utb.user.User;
 import java.util.Scanner;
 
 public class DepositCommand extends Command {
@@ -25,8 +28,14 @@ public class DepositCommand extends Command {
             }
             System.out.print("Enter (optional) deposit transaction name: ");
             String transactionName = scanner.nextLine().trim();
-            Transaction deposit = new DepositTransaction(amount, transactionName);
+            User loggedInUser = bank.getLoggedInUser();
+            if (loggedInUser == null) {
+                System.out.println("No user is logged in.");
+                return;
+            }
+            Transaction deposit = new DepositTransaction(amount, transactionName, loggedInUser.getUserId());
             bank.addTransaction(deposit);
+            System.out.println("Deposit transaction has been recorded.");
         } catch (NumberFormatException e) {
             System.out.println("Invalid amount format. Please enter a valid number.");
         }

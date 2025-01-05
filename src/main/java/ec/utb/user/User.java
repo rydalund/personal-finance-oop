@@ -8,15 +8,16 @@ public abstract class User {
     private String username;
     private String email;
     private String passwordHash;
+    private String role;
 
-    public User(UUID userId, String username, String email, String passwordHash) {
+    public User(UUID userId, String username, String email, String passwordHash, String role) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.role = role;
     }
 
-    // Getter och Setter metoder
     public UUID getUserId() {
         return userId;
     }
@@ -49,6 +50,13 @@ public abstract class User {
         this.passwordHash = passwordHash;
     }
 
-    // Abstrakt metod som kan implementeras för specifika användartyper
-    public abstract String getRole();
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public abstract String getRoleDescription();
 }

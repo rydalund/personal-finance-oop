@@ -1,9 +1,7 @@
 package ec.utb.command;
-import ec.utb.Bank;
 import ec.utb.menu.BankMenu;
 
 public class ExitCommand extends Command {
-
     private final BankMenu bankMenu;
     public ExitCommand(BankMenu bankMenu) {
         super("EXIT", "Exit the application", null);

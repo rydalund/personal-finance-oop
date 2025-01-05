@@ -1,6 +1,7 @@
 package ec.utb.data;
 import ec.utb.transaction.Transaction;
 import ec.utb.transaction.TransactionManager;
+import ec.utb.user.User;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -81,5 +82,25 @@ public class TransactionFileSaver implements TransactionManager {
                 System.err.println("Error saving updated transactions: " + e.getMessage());
             }
         }
+    }
+    //bara för att det ska finnas en override
+    @Override
+    public List<Transaction> readTransactionsForUser(UUID userId) {
+        return List.of();
+    }
+
+    @Override
+    public Transaction readTransactionById(UUID transactionId) {
+        return null;
+    }
+
+    @Override
+    public List<User> readAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public void deleteUserTransactions(UUID userId) {
+
     }
 }

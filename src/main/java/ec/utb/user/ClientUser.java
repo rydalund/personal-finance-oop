@@ -5,11 +5,11 @@ import java.util.UUID;
 public class ClientUser extends User {
 
     public ClientUser(UUID userId, String username, String email, String passwordHash) {
-        super(userId, username, email, passwordHash);
+        super(userId, username, email, passwordHash, "Client");
     }
 
     @Override
-    public String getRole() {
+    public String getRoleDescription() {
         return "Client";
     }
 }
