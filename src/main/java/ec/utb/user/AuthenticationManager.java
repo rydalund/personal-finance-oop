@@ -25,8 +25,6 @@ public class AuthenticationManager {
     }
 
     public User getLoggedInUser() {
-        String foo = String.valueOf(loggedInUser);
-        System.out.println(foo);
         return loggedInUser;
     }
 

@@ -57,12 +57,15 @@ public class TransactionDatabaseSaver implements TransactionManager {
         return readTransactionsForUser(null);
     }
 
+    //För att få till en join
     @Override
     public List<Transaction> readTransactionsForUser(UUID userId) {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transactions";
+        String sql = "SELECT t.transaction_id, t.amount, t.description, t.date, t.type, t.user_id, u.username, u.email " +
+                "FROM transactions t " +
+                "INNER JOIN users u ON t.user_id = u.user_id";
         if (userId != null) {
-            sql += " WHERE user_id = ?";
+            sql += " WHERE t.user_id = ?";
         }
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -77,6 +80,8 @@ public class TransactionDatabaseSaver implements TransactionManager {
                 LocalDate transactionDate = resultSet.getDate("date").toLocalDate();
                 TransactionType transactionType = TransactionType.valueOf(resultSet.getString("type"));
                 UUID userIdFromDb = UUID.fromString(resultSet.getString("user_id"));
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
                 Transaction transaction = createTransaction(transactionId, amount, transactionName, transactionDate, transactionType, userIdFromDb);
                 transactions.add(transaction);
             }
